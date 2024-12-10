@@ -1,0 +1,24 @@
+---
+- name: Remove worker node from the master node
+  hosts: control
+  gather_facts: yes
+  vars_files:
+    - vars/k8s_remove_worker_node.yml
+  roles:
+    - k8s-remove-worker-node
+
+- name: Remove kube specific services and file from the worker node
+  hosts: remove_worker_nodes
+  gather_facts: yes
+  serial: 1
+  vars_files:
+    - vars/k8s_remove_worker_node.yml
+  tasks:
+    - name: Remove kube services from worker node 
+      shell: "kubeadm reset -f"
+      become: true
+      register: kube_res
+    - debug: var=kube_res
+    - name: Delete net.d folder from worker node
+      shell: "rm -rf {{directory_path}}"
+      become: true

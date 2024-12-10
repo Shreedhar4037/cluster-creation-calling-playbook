@@ -1,0 +1,14 @@
+- hosts: all
+  vars_files:
+    - vars/all.yml
+  tasks:
+    - name: import role 
+      import_role:
+        name: k8s_flux
+      become: true 
+      register: status
+    - name: introducing pause for the flux components to be ready
+      pause:
+        seconds: 60
+      tags: setup
+      become: true

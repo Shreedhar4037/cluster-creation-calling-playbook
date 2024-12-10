@@ -1,0 +1,24 @@
+- name: Generate join command on controller node
+  hosts: control
+  gather_facts: yes
+  tasks:
+    - name: generate new token and print join command for the worker node
+      shell: 'kubeadm token create --print-join-command'
+      register: k8s_join_cmd
+      become: true
+
+- name: Add new worker node to the existing k8s setup
+  hosts: new_worker
+  gather_facts: yes
+  serial: 1
+  vars_files:
+    - vars/all.yml
+  tasks:
+    - name: import role
+      vars: 
+        join_token: "{{ hostvars['Master1']['k8s_join_cmd']['stdout'] }}"
+      import_role:
+        name: k8s-multimaster
+      become: true
+      register: status
+      

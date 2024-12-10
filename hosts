@@ -1,0 +1,14 @@
+### k8s setup ###
+[control]
+Master1 ansible_host=dc15-cmf-prod-mastrc8-001.neustar.net my_host_alias=Master1 server_priority=102 server_state=MASTER
+
+[controllers]
+Master2 ansible_host=dc15-cmf-prod-mastrc8-002.neustar.net my_host_alias=Master2 server_priority=99 server_state=BACKUP
+Master3 ansible_host=dc15-cmf-prod-mastrc8-003.neustar.net my_host_alias=Master3 server_priority=100 server_state=BACKUP
+
+[workers]
+Worker1 ansible_host=dc15-cmf-prod-wrkrc8-004.neustar.net my_host_alias=Worker1
+Worker2 ansible_host=dc15-cmf-prod-wrkrc8-005.neustar.net my_host_alias=Worker2
+Worker3 ansible_host=dc15-cmf-prod-wrkrc8-006.neustar.net my_host_alias=Worker3
+Worker4 ansible_host=dc15-cmf-prod-wrkrc8-007.neustar.net my_host_alias=Worker4
+Worker5 ansible_host=dc15-cmf-prod-wrkrc8-008.neustar.net my_host_alias=Worker5

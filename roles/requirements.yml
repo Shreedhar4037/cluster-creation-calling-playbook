@@ -1,0 +1,17 @@
+---
+  roles:
+   - src: https://git.nexgen.neustar.biz/onedev/iac-poc/ansible-shared-roles/k8s-multimaster.git
+     scm: git
+     version: "feature/cluster-bootstrap-1.30.0"
+
+   - src: https://git.nexgen.neustar.biz/onedev/iac-poc/ansible-shared-roles/k8s_master_node.git
+     scm: git
+     version: "feature/add-master-1.26.0"
+
+   - src: https://git.nexgen.neustar.biz/onedev/iac-poc/ansible-shared-roles/k8s_worker_node.git
+     scm: git
+     version: "master"
+
+   - src: https://git.nexgen.neustar.biz/onedev/iac-poc/ansible-shared-roles/k8s_flux.git
+     scm: git
+     version: "feature/flux-roles-k8s"

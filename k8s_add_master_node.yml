@@ -1,0 +1,35 @@
+---
+    - name: Generate join command on controller node
+      hosts: control
+      gather_facts: yes
+      tasks:      
+        - name: generate new token and print join command for the control plane
+          shell: 'kubeadm token create --print-join-command'
+          register: k8s_join_cmd
+          become: true
+
+        - name: generate certificate key for control plane
+          shell: 'kubeadm init phase upload-certs --upload-certs 2>/dev/null | tail -1'
+          register: master_certificate_key
+          become: true
+
+
+    - name: Add new master node to the existing cluster
+      hosts: new_master
+      gather_facts: yes
+      serial: 1
+      vars_files:
+        - vars/all.yml
+      tasks:
+        - name: import role
+          import_role:
+            name: k8s_master_node
+          vars: 
+            join_token: "{{ hostvars['Master1']['k8s_join_cmd']['stdout'] }}"
+            certificate_key: "{{ hostvars['Master1']['master_certificate_key']['stdout'] }}"
+          become: true
+          register: status
+        - name: introducing pause for the cluster to be ready
+          pause:
+            seconds: 60
+          become: true
